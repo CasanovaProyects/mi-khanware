@@ -60,16 +60,24 @@ function handleInput(ids, callback = null) {
     });
 }
 
-/* Watermark */
+/* Watermark ULTRA */
 Object.assign(watermark.style, {
-    position: 'fixed', top: '0', left: '85%', width: '150px', height: '30px', backgroundColor: 'RGB(0,0,0,0.5)',
-    color: 'white', fontSize: '15px', fontFamily: 'MuseoSans, sans-serif', display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
-    cursor: 'default', userSelect: 'none', padding: '0 10px',  borderRadius: '10px', zIndex: '1001', transition: 'transform 0.3s ease'
+    position: 'fixed', top: '0', left: '85%', width: '160px', height: '35px', 
+    background: 'linear-gradient(45deg, rgba(0,0,0,0.8), rgba(0,255,65,0.2))',
+    color: 'white', fontSize: '15px', fontFamily: 'MuseoSans, sans-serif', 
+    display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
+    cursor: 'default', userSelect: 'none', padding: '0 12px', borderRadius: '12px', 
+    zIndex: '1001', transition: 'all 0.3s ease',
+    border: '1px solid rgba(0,255,65,0.3)', boxShadow: '0 0 15px rgba(0,255,65,0.2)'
 });
 
-if (device.mobile) watermark.style.left = '55%'
+if (device.mobile) watermark.style.left = '50%'
 
-watermark.innerHTML = `<span style="text-shadow: -1px 0.5px 0 #72ff72, -2px 0px 0 #2f672e;">KW</span> <span style="color:gray; padding-left:2px; font-family: Arial, sans-serif; font-size:10px">${ver}</span>`;
+watermark.innerHTML = `
+    <span style="text-shadow: -1px 0.5px 0 #00ff41, -2px 0px 0 #00aa2e; font-weight: bold;">KW</span>
+    <span style="color: #00ff41; font-size: 10px;">ULTRA</span>
+    <span style="color: gray; padding-left: 2px; font-family: Arial, sans-serif; font-size: 10px">${ver}</span>
+`;
 
 document.body.appendChild(watermark);
 
@@ -102,35 +110,66 @@ dropdownMenu.innerHTML = `
 watermark.appendChild(dropdownMenu);
 
 let featuresList = [
-    { name: 'questionSpoof', type: 'checkbox', variable: 'features.questionSpoof', attributes: 'checked', labeled: true, label: 'Question Spoof' },
-    { name: 'videoSpoof', type: 'checkbox', variable: 'features.videoSpoof', attributes: 'checked', labeled: true, label: 'Video Spoof' },
-    { name: 'showAnswers', type: 'checkbox', variable: 'features.showAnswers', labeled: true, label: 'Answer Revealer' },
-    { name: 'autoAnswer', type: 'checkbox', variable: 'features.autoAnswer', dependent: 'autoAnswerDelay,nextRecomendation,repeatQuestion', labeled: true, label: 'Auto Answer' },
-    { name: 'repeatQuestion', className: 'repeatQuestion', type: 'checkbox', variable: 'features.repeatQuestion', attributes: 'style="display:none;"', labeled: true, label: 'Repeat Question' },
-    { name: 'nextRecomendation', className: 'nextRecomendation', type: 'checkbox', variable: 'features.nextRecomendation', attributes: 'style="display:none;"', labeled: true, label: 'Recomendations' },
-    { name: 'autoAnswerDelay', className: 'autoAnswerDelay', type: 'range', variable: 'features.autoAnswerDelay', attributes: 'style="display:none;" min="1" max="3" value="1"', labeled: false },
-    { name: 'minuteFarm', type: 'checkbox', variable: 'features.minuteFarmer', labeled: true, label: 'Minute Farmer' },
-    { name: 'customBanner', type: 'checkbox', variable: 'features.customBanner', labeled: true, label: 'Custom Banner' },
-    { name: 'rgbLogo', type: 'checkbox', variable: 'features.rgbLogo', labeled: true, label: 'RGB Logo' },
-    { name: 'darkMode', type: 'checkbox', variable: 'features.darkMode', attributes: 'checked', labeled: true, label: 'Dark Mode' },
-    { name: 'onekoJs', type: 'checkbox', variable: 'features.onekoJs', labeled: true, label: 'onekoJs' },
+    { name: 'questionSpoof', type: 'checkbox', variable: 'features.questionSpoof', attributes: 'checked', labeled: true, label: '🎯 Question Spoof' },
+    { name: 'videoSpoof', type: 'checkbox', variable: 'features.videoSpoof', attributes: 'checked', labeled: true, label: '🎬 Video Spoof' },
+    { name: 'showAnswers', type: 'checkbox', variable: 'features.showAnswers', labeled: true, label: '👁️ Answer Revealer' },
+    { name: 'autoAnswer', type: 'checkbox', variable: 'features.autoAnswer', dependent: 'autoAnswerDelay,nextRecomendation,repeatQuestion', labeled: true, label: '🤖 Auto Answer' },
+    { name: 'repeatQuestion', className: 'repeatQuestion', type: 'checkbox', variable: 'features.repeatQuestion', attributes: 'style="display:none;"', labeled: true, label: '🔄 Repeat Question' },
+    { name: 'nextRecomendation', className: 'nextRecomendation', type: 'checkbox', variable: 'features.nextRecomendation', attributes: 'style="display:none;"', labeled: true, label: '➡️ Recomendations' },
+    { name: 'autoAnswerDelay', className: 'autoAnswerDelay', type: 'range', variable: 'features.autoAnswerDelay', attributes: 'style="display:none;" min="1" max="5" value="3"', labeled: false },
+    { name: 'minuteFarm', type: 'checkbox', variable: 'features.minuteFarmer', labeled: true, label: '⏰ Minute Farmer' },
+    { name: 'customBanner', type: 'checkbox', variable: 'features.customBanner', labeled: true, label: '🎨 Custom Banner' },
+    { name: 'rgbLogo', type: 'checkbox', variable: 'features.rgbLogo', labeled: true, label: '🌈 RGB Logo' },
+    { name: '── ULTRA FEATURES ──', type: 'nonInput', attributes: 'style="color: #00ff41; font-weight: bold; text-align: center; margin: 10px 0;"' },
+    { name: 'stealthMode', type: 'checkbox', variable: 'features.stealthMode', attributes: 'checked', labeled: true, label: '🥷 Stealth Mode' },
+    { name: 'smartDelay', type: 'checkbox', variable: 'features.smartDelay', attributes: 'checked', labeled: true, label: '🧠 Smart Delays' },
+    { name: 'humanBehavior', type: 'checkbox', variable: 'features.humanBehavior', attributes: 'checked', labeled: true, label: '🤝 Human Behavior' },
+    { name: 'antiDetection', type: 'checkbox', variable: 'features.antiDetection', attributes: 'checked', labeled: true, label: '🛡️ Anti-Detection' },
+    { name: 'statisticsPanel', type: 'checkbox', variable: 'features.statisticsPanel', attributes: 'checked', labeled: true, label: '📊 Stats Panel' },
+    { name: '── CLASSIC FEATURES ──', type: 'nonInput', attributes: 'style="color: #888; font-size: 10px; text-align: center; margin: 10px 0;"' },
+    { name: 'darkMode', type: 'checkbox', variable: 'features.darkMode', attributes: 'checked', labeled: true, label: '🌙 Dark Mode' },
+    { name: 'onekoJs', type: 'checkbox', variable: 'features.onekoJs', labeled: true, label: '🐱 onekoJs' },
+    { name: '── CUSTOMIZATION ──', type: 'nonInput', attributes: 'style="color: #ffd700; font-size: 10px; text-align: center; margin: 10px 0;"' },
     { name: 'Custom Username', type: 'nonInput' },
-    { name: 'customName', type: 'text', variable: 'featureConfigs.customUsername', attributes: 'autocomplete="off"' },
-    { name: 'Custom pfp', type: 'nonInput' },
-    { name: 'customPfp', type: 'text', variable: 'featureConfigs.customPfp', attributes: 'autocomplete="off"' }
+    { name: 'customName', type: 'text', variable: 'featureConfigs.customUsername', attributes: 'autocomplete="off" placeholder="Tu username aquí..."' },
+    { name: 'Custom Profile Picture', type: 'nonInput' },
+    { name: 'customPfp', type: 'text', variable: 'featureConfigs.customPfp', attributes: 'autocomplete="off" placeholder="URL de imagen..."' },
+    { name: '── ACTIONS ──', type: 'nonInput', attributes: 'style="color: #ff6b6b; font-size: 10px; text-align: center; margin: 10px 0;"' }
   ];
   
 
-featuresList.push({ name: `${user.username} - UID: ${user.UID}`, type: 'nonInput', attributes: 'style="font-size:10px;"padding-left:5px;' });
+featuresList.push({ name: `${user.username} - UID: ${user.UID}`, type: 'nonInput', attributes: 'style="font-size:10px; color: #00ff41; text-align: center; margin-top: 10px;"' });
+featuresList.push({ name: 'ULTRA Stats', type: 'nonInput', attributes: 'style="color: #00ff41; cursor: pointer; text-align: center; text-decoration: underline;" onclick="toggleStatsPanel()"' });
+featuresList.push({ name: 'GitHub Repo', type: 'nonInput', attributes: 'style="color: #4ecdc4; cursor: pointer; text-align: center; text-decoration: underline;" onclick="window.open(\'https://github.com/CasanovaProyects/mi-khanware\')"' });
 
 addFeature(featuresList);
 
+// Enhanced handlers with new features
 handleInput(['questionSpoof', 'videoSpoof', 'showAnswers', 'nextRecomendation', 'repeatQuestion', 'minuteFarm', 'customBanner', 'rgbLogo']);
-handleInput(['customName', 'customPfp'])
-handleInput('autoAnswer', checked => checked && !features.questionSpoof && (document.querySelector('[setting-data="features.questionSpoof"]').checked = features.questionSpoof = true));
-handleInput('autoAnswerDelay', value => value && (featureConfigs.autoAnswerDelay = 4 - value));
+handleInput(['stealthMode', 'smartDelay', 'humanBehavior', 'antiDetection', 'statisticsPanel']);
+handleInput(['customName', 'customPfp']);
+handleInput('autoAnswer', checked => {
+    if (checked && !features.questionSpoof) {
+        document.querySelector('[setting-data="features.questionSpoof"]').checked = features.questionSpoof = true;
+        sendToast('🎯 Question Spoof activado automáticamente', 2000);
+    }
+});
+handleInput('autoAnswerDelay', value => value && (featureConfigs.autoAnswerDelay = 6 - value)); // Inverted scale
 handleInput('darkMode', checked => checked ? (DarkReader.setFetchMethod(window.fetch), DarkReader.enable()) : DarkReader.disable());
-handleInput('onekoJs', checked => { onekoEl = document.getElementById('oneko'); if (onekoEl) {onekoEl.style.display = checked ? null : "none"} });
+handleInput('onekoJs', checked => { 
+    const onekoEl = document.getElementById('oneko'); 
+    if (onekoEl) onekoEl.style.display = checked ? null : "none";
+});
+handleInput('statisticsPanel', checked => {
+    if (checked) {
+        const panel = document.getElementById('ultra-stats-panel') || createUltraStatsPanel();
+        panel.style.display = 'block';
+        sendToast('📊 Panel de estadísticas activado', 2000);
+    } else {
+        const panel = document.getElementById('ultra-stats-panel');
+        if (panel) panel.style.display = 'none';
+    }
+});
 
 watermark.addEventListener('mouseenter', () => { dropdownMenu.style.display = 'flex'; playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/3kd01iyj.wav'); } );
 watermark.addEventListener('mouseleave', e => { !watermark.contains(e.relatedTarget) && (dropdownMenu.style.display = 'none'); playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/rqizlm03.wav'); });

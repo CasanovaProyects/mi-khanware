@@ -1,37 +1,73 @@
-# 🌿 TUS LINKS PERSONALIZADOS DE KHANWARE
+# 🚀 KHANWARE ULTRA - LINKS DEFINITIVOS
 
-## 📦 Versión Completa:
+## � VERSIÓN ULTRA COMPLETA (RECOMENDADO):
 javascript:fetch("https://raw.githubusercontent.com/CasanovaProyects/mi-khanware/main/Khanware.js").then(t=>t.text()).then(eval);
 
-## 🪶 Versión Minimal:
-javascript:fetch("https://raw.githubusercontent.com/CasanovaProyects/mi-khanware/main/khanwareMinimal.js").then(t=>t.text()).then(eval);
-
-## 🔗 Usando JSDelivr CDN (Más rápido):
+## ⚡ CDN ULTRA-RÁPIDO (JSDELIVR):
 javascript:fetch("https://cdn.jsdelivr.net/gh/CasanovaProyects/mi-khanware@main/Khanware.js").then(t=>t.text()).then(eval);
 
-## 📋 INSTRUCCIONES DE USO:
-1. Copia uno de los links de arriba
-2. Ve a tu navegador y crea un nuevo marcador/favorito
-3. En la URL del marcador, pega el código JavaScript
-4. Guarda el marcador con un nombre como "Khanware"
-5. Ve a Khan Academy (https://es.khanacademy.org/)
-6. Haz clic en tu marcador para activar Khanware
+## 🪶 VERSIÓN MINIMAL (BÁSICA):
+javascript:fetch("https://raw.githubusercontent.com/CasanovaProyects/mi-khanware/main/khanwareMinimal.js").then(t=>t.text()).then(eval);
 
-## 🚀 ENLACES DIRECTOS PARA PROBAR:
-- Repositorio: https://github.com/CasanovaProyects/mi-khanware
-- Archivo principal: https://raw.githubusercontent.com/CasanovaProyects/mi-khanware/main/Khanware.js
-- Khan Academy: https://es.khanacademy.org/
+## 🎯 STATICALLY CDN (ALTERNATIVO):
+javascript:fetch("https://cdn.statically.io/gh/CasanovaProyects/mi-khanware/main/Khanware.js").then(t=>t.text()).then(eval);
 
-## 🛠️ PERSONALIZACIÓN:
-Para hacer más cambios:
-1. Edita los archivos en tu carpeta local
-2. Ejecuta: git add .
-3. Ejecuta: git commit -m "Mis cambios"
-4. Ejecuta: git push origin main
-5. Los cambios estarán disponibles inmediatamente en el link
+═══════════════════════════════════════════
 
-## ⚡ CDN RECOMENDADO:
-El link con cdn.jsdelivr.net es más rápido porque:
-- Tiene cache global
-- Se actualiza automáticamente 
-- Mejor rendimiento que GitHub Raw
+## 📋 INSTRUCCIONES RÁPIDAS:
+1. COPIA uno de los códigos de arriba
+2. CREA un marcador en tu navegador
+3. PEGA el código en la URL del marcador
+4. GUARDA como "Khanware Ultra"
+5. VE A: https://es.khanacademy.org/
+6. HAZ CLIC en tu marcador
+
+═══════════════════════════════════════════
+
+## 🌟 NUEVAS CARACTERÍSTICAS ULTRA:
+✅ Sistema anti-detección avanzado
+✅ Comportamiento humano simulado
+✅ Panel de estadísticas en tiempo real
+✅ Delays inteligentes adaptativos
+✅ UI mejorada con efectos visuales
+✅ Modo stealth ultra avanzado
+✅ Exportación de estadísticas
+✅ Persistencia entre sesiones
+
+## 🛡️ MODO STEALTH INCLUIDO:
+- Movimientos de mouse aleatorios
+- Delays variables según hora del día
+- Simulación de actividad humana
+- Patrones de clic naturales
+
+## � ESTADÍSTICAS AVANZADAS:
+- Tiempo de sesión preciso
+- Preguntas y videos completados
+- Eficiencia en tiempo real
+- Puntuación ULTRA personalizada
+
+═══════════════════════════════════════════
+
+## 🔗 ENLACES ÚTILES:
+- 📚 Repositorio: https://github.com/CasanovaProyects/mi-khanware
+- 🌐 Khan Academy: https://es.khanacademy.org/
+- 📊 Generador de Links: Abre linkGenerator.html
+
+## � ACTUALIZACIÓN AUTOMÁTICA:
+Todos los links se actualizan automáticamente cuando 
+subimos cambios al repositorio. ¡No necesitas hacer nada!
+
+═══════════════════════════════════════════
+
+## ⚠️ IMPORTANTE:
+- Usa SOLO en Khan Academy oficial
+- Funciona mejor en Chrome/Edge
+- Requiere JavaScript habilitado
+- Para móviles: usa la versión minimal
+
+## 🎯 RECOMENDACIÓN:
+Para la mejor experiencia, usa el LINK CDN ULTRA-RÁPIDO
+con JSDelivr - es el más estable y rápido.
+
+Made with ❤️ by CasanovaProyects
+V4.0.0 ULTRA - La evolución definitiva
