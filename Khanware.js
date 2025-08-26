@@ -1,8 +1,8 @@
 const ver = "V3.1.3-Custom";
 let isDev = false;
 
-// Cambia esta URL por tu propio repositorio
-const repoPath = `https://raw.githubusercontent.com/TU-USUARIO/TU-REPO/refs/heads/${isDev ? "dev/" : "main/"}`;
+// Tu repositorio personalizado
+const repoPath = `https://raw.githubusercontent.com/CasanovaProyects/mi-khanware/refs/heads/${isDev ? "dev/" : "main/"}`;
 
 let device = {
     mobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone|Mobile|Tablet|Kindle|Silk|PlayBook|BB10/i.test(navigator.userAgent),
