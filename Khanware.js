@@ -77,7 +77,8 @@ const plppdo = new EventEmitter();
 new MutationObserver((mutationsList) => { for (let mutation of mutationsList) if (mutation.type === 'childList') plppdo.emit('domChanged'); }).observe(document.body, { childList: true, subtree: true });
 
 /* Enhanced Functions */
-window.debug = function(text) { if(features.debug) console.log(`[KHANWARE-ULTRA] ${text}`); }
+window.debug = function(text) { if(window.debugMode) console.log(`[KHANWARE-ULTRA] ${text}`); }
+window.debugMode = true; // Activar debug por defecto
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms + (features.humanBehavior ? Math.random() * ms * 0.3 : 0)));
 const playAudio = url => { const audio = new Audio(url); audio.volume = 0.3; audio.play().catch(() => {}); debug(`🔊 Playing: ${url}`); };
 const findAndClickBySelector = selector => { 
@@ -289,7 +290,36 @@ loadScript('https://cdn.jsdelivr.net/npm/toastify-js', 'toastifyPlugin')
     ⏱️ Tiempo total: ${Math.round(statistics.totalTimeUsed / 60000)} min
     
     🚀 by CasanovaProyects
+    
+    🎮 COMANDOS DE EMERGENCIA:
+    - openUltraMenu() - Abrir menú ULTRA
+    - showUltraStats() - Mostrar estadísticas  
+    - toggleDebug() - Activar/desactivar debug
     `);
+    
+    // Funciones globales de emergencia
+    window.openUltraMenu = () => {
+        const menu = document.querySelector('dropDownMenu');
+        if (menu) {
+            menu.style.display = 'flex';
+            sendToast("🎮 Menú ULTRA abierto por comando", 2000);
+        } else {
+            sendToast("❌ Menú no encontrado", 2000);
+        }
+    };
+    
+    window.showUltraStats = () => {
+        if (typeof toggleStatsPanel === 'function') {
+            toggleStatsPanel();
+        } else {
+            sendToast("📊 Panel de stats no disponible aún", 2000);
+        }
+    };
+    
+    window.toggleDebug = () => {
+        window.debugMode = !window.debugMode;
+        sendToast(`🐛 Debug: ${window.debugMode ? 'ON' : 'OFF'}`, 2000);
+    };
 });
 
 /* Thank you to everyone who has purchased access to my cheat as of 10/28/24.

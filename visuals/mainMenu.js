@@ -81,6 +81,18 @@ watermark.innerHTML = `
 
 document.body.appendChild(watermark);
 
+// Mensaje de confirmación del menú
+debug("✅ Watermark ULTRA agregado al DOM");
+setTimeout(() => {
+    sendToast("🎮 Haz HOVER o CLICK en 'KW ULTRA' para abrir menú", 4000);
+    console.log("🎯 Menú ULTRA listo - Coordenadas:", {
+        top: watermark.offsetTop,
+        left: watermark.offsetLeft,
+        width: watermark.offsetWidth,
+        height: watermark.offsetHeight
+    });
+}, 2000);
+
 let isDragging = false, offsetX, offsetY;
 
 watermark.addEventListener('mousedown', e => { if (!dropdownMenu.contains(e.target)) { isDragging = true; offsetX = e.clientX - watermark.offsetLeft; offsetY = e.clientY - watermark.offsetTop; watermark.style.transform = 'scale(0.9)'; } });
@@ -88,22 +100,51 @@ watermark.addEventListener('mouseup', () => { isDragging = false; watermark.styl
 
 document.addEventListener('mousemove', e => { if (isDragging) { let newX = Math.max(0, Math.min(e.clientX - offsetX, window.innerWidth - watermark.offsetWidth)); let newY = Math.max(0, Math.min(e.clientY - offsetY, window.innerHeight - watermark.offsetHeight)); Object.assign(watermark.style, { left: `${newX}px`, top: `${newY}px` }); dropdownMenu.style.display = 'none'; } });
 
-/* Dropdown */
+/* Dropdown ULTRA */
 Object.assign(dropdownMenu.style, {
-    position: 'absolute', top: '100%', left: '0', width: '160px', backgroundColor: 'rgba(0,0,0,0.3)',
-    borderRadius: '10px', color: 'white', fontSize: '13px', fontFamily: 'Monospace, sans-serif',
-    display: 'none', flexDirection: 'column', zIndex: '1000', padding: '5px', cursor: 'default',
-    userSelect: 'none', transition: 'transform 0.3s ease', backdropFilter: 'blur(2px)', WebkitBackdropFilter: 'blur(2px)'
+    position: 'absolute', top: '100%', left: '0', width: '200px', 
+    background: 'linear-gradient(135deg, rgba(0,0,0,0.95), rgba(0,40,0,0.9))',
+    borderRadius: '12px', color: 'white', fontSize: '13px', fontFamily: 'Monospace, sans-serif',
+    display: 'none', flexDirection: 'column', zIndex: '10000', padding: '8px', cursor: 'default',
+    userSelect: 'none', transition: 'all 0.3s ease', backdropFilter: 'blur(5px)', 
+    WebkitBackdropFilter: 'blur(5px)', border: '1px solid rgba(0,255,65,0.3)',
+    boxShadow: '0 5px 25px rgba(0,255,65,0.2), inset 0 1px 0 rgba(255,255,255,0.1)',
+    maxHeight: '400px', overflowY: 'auto'
 });
 
 dropdownMenu.innerHTML = `
     <style>
-        input[type="checkbox"] {appearance: none; width: 15px; height: 15px; background-color: #3a3a3b;
-        border: 1px solid #acacac; border-radius: 3px; margin-right: 5px; cursor: pointer;}
-        input[type="checkbox"]:checked {background-color: #540b8a; border-color: #720fb8;}
-        input[type="text"], input[type="number"], input[type="range"] {width: calc(100% - 10px); border: 1px solid #343434; 
-        color: white; accent-color: #540b8a; background-color: #540b8a; padding: 3px; border-radius: 3px; background: none;}
-        label {display: flex; align-items: center; color: #3a3a3b; padding-top: 3px;}
+        input[type="checkbox"] {
+            appearance: none; width: 16px; height: 16px; background-color: #2a2a2a;
+            border: 2px solid #00ff41; border-radius: 4px; margin-right: 8px; cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        input[type="checkbox"]:checked {
+            background-color: #00ff41; border-color: #00aa2e;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>');
+        }
+        input[type="checkbox"]:hover {
+            border-color: #00ff41; box-shadow: 0 0 8px rgba(0,255,65,0.3);
+        }
+        input[type="text"], input[type="number"], input[type="range"] {
+            width: calc(100% - 10px); border: 1px solid #00ff41; 
+            color: #00ff41; accent-color: #00ff41; background-color: rgba(0,0,0,0.7); 
+            padding: 4px 6px; border-radius: 4px; font-size: 11px;
+            transition: all 0.2s ease;
+        }
+        input[type="text"]:focus, input[type="number"]:focus {
+            outline: none; border-color: #00aa2e; box-shadow: 0 0 8px rgba(0,255,65,0.4);
+        }
+        label {
+            display: flex; align-items: center; color: #e0e0e0; padding: 4px 2px; 
+            transition: color 0.2s ease; font-size: 12px;
+        }
+        label:hover {
+            color: #00ff41; background-color: rgba(0,255,65,0.1); border-radius: 4px;
+        }
+        .ultra-section {
+            margin: 8px 0; padding: 4px 0; border-top: 1px solid rgba(0,255,65,0.2);
+        }
     </style>
 `;
 
@@ -171,5 +212,36 @@ handleInput('statisticsPanel', checked => {
     }
 });
 
-watermark.addEventListener('mouseenter', () => { dropdownMenu.style.display = 'flex'; playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/3kd01iyj.wav'); } );
-watermark.addEventListener('mouseleave', e => { !watermark.contains(e.relatedTarget) && (dropdownMenu.style.display = 'none'); playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/rqizlm03.wav'); });
+watermark.addEventListener('mouseenter', () => { 
+    dropdownMenu.style.display = 'flex'; 
+    playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/3kd01iyj.wav'); 
+});
+
+watermark.addEventListener('mouseleave', e => { 
+    if (!watermark.contains(e.relatedTarget)) {
+        dropdownMenu.style.display = 'none'; 
+        playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/rqizlm03.wav'); 
+    }
+});
+
+// NUEVO: Evento de click adicional para abrir/cerrar
+watermark.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const isVisible = dropdownMenu.style.display === 'flex';
+    dropdownMenu.style.display = isVisible ? 'none' : 'flex';
+    playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/5os0bypi.wav');
+    sendToast(isVisible ? '📴 Menú cerrado' : '📱 Menú ULTRA abierto', 1500);
+});
+
+// NUEVO: Evitar que el menú se cierre al hacer click dentro
+dropdownMenu.addEventListener('click', (e) => {
+    e.stopPropagation();
+});
+
+// NUEVO: Cerrar menú al hacer click fuera
+document.addEventListener('click', (e) => {
+    if (!watermark.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        dropdownMenu.style.display = 'none';
+    }
+});
