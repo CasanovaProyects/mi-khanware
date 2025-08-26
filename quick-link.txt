@@ -1,0 +1,37 @@
+# 🌿 TUS LINKS PERSONALIZADOS DE KHANWARE
+
+## 📦 Versión Completa:
+javascript:fetch("https://raw.githubusercontent.com/CasanovaProyects/mi-khanware/main/Khanware.js").then(t=>t.text()).then(eval);
+
+## 🪶 Versión Minimal:
+javascript:fetch("https://raw.githubusercontent.com/CasanovaProyects/mi-khanware/main/khanwareMinimal.js").then(t=>t.text()).then(eval);
+
+## 🔗 Usando JSDelivr CDN (Más rápido):
+javascript:fetch("https://cdn.jsdelivr.net/gh/CasanovaProyects/mi-khanware@main/Khanware.js").then(t=>t.text()).then(eval);
+
+## 📋 INSTRUCCIONES DE USO:
+1. Copia uno de los links de arriba
+2. Ve a tu navegador y crea un nuevo marcador/favorito
+3. En la URL del marcador, pega el código JavaScript
+4. Guarda el marcador con un nombre como "Khanware"
+5. Ve a Khan Academy (https://es.khanacademy.org/)
+6. Haz clic en tu marcador para activar Khanware
+
+## 🚀 ENLACES DIRECTOS PARA PROBAR:
+- Repositorio: https://github.com/CasanovaProyects/mi-khanware
+- Archivo principal: https://raw.githubusercontent.com/CasanovaProyects/mi-khanware/main/Khanware.js
+- Khan Academy: https://es.khanacademy.org/
+
+## 🛠️ PERSONALIZACIÓN:
+Para hacer más cambios:
+1. Edita los archivos en tu carpeta local
+2. Ejecuta: git add .
+3. Ejecuta: git commit -m "Mis cambios"
+4. Ejecuta: git push origin main
+5. Los cambios estarán disponibles inmediatamente en el link
+
+## ⚡ CDN RECOMENDADO:
+El link con cdn.jsdelivr.net es más rápido porque:
+- Tiene cache global
+- Se actualiza automáticamente 
+- Mejor rendimiento que GitHub Raw
