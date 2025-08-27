@@ -386,8 +386,36 @@ loadScript('https://cdn.jsdelivr.net/npm/toastify-js', 'toastifyPlugin')
     }, 1000);
     
     hideSplashScreen();
-    setupMenu();
-    setupMain();
+    
+    // Inicialización mejorada con timeouts escalonados
+    setTimeout(() => {
+        setupMenu();
+        debug("📱 Menú inicializado");
+    }, 1000);
+    
+    setTimeout(() => {
+        setupMain();
+        debug("⚙️ Funciones principales cargadas");
+    }, 1500);
+    
+    // Verificación del menú después de carga
+    setTimeout(() => {
+        const watermark = document.querySelector('#studyboost-watermark') || document.querySelector('watermark');
+        const dropdown = document.querySelector('#studyboost-menu') || document.querySelector('dropDownMenu');
+        
+        if (!watermark) {
+            console.warn("⚠️ Watermark no encontrado, intentando recrear...");
+            setupMenu(); // Reintentar
+        } else {
+            console.log("✅ Watermark encontrado:", watermark);
+        }
+        
+        if (!dropdown) {
+            console.warn("⚠️ Dropdown no encontrado");
+        } else {
+            console.log("✅ Dropdown encontrado:", dropdown);
+        }
+    }, 3000);
     
     console.clear();
     console.log(`
@@ -407,15 +435,37 @@ loadScript('https://cdn.jsdelivr.net/npm/toastify-js', 'toastifyPlugin')
     - toggleDebug() - Activar/desactivar debug
     `);
     
-    // Funciones globales de emergencia
+    // Funciones globales de emergencia mejoradas
     window.openUltraMenu = () => {
-        const menu = document.querySelector('dropDownMenu');
-        if (menu) {
+        const watermark = document.querySelector('#studyboost-watermark') || document.querySelector('watermark');
+        const menu = document.querySelector('#studyboost-menu') || document.querySelector('dropDownMenu');
+        
+        if (watermark && menu) {
             menu.style.display = 'flex';
+            menu.style.opacity = '1';
+            menu.style.transform = 'translateY(0px)';
             sendToast("🎮 Menú ULTRA abierto por comando", 2000);
+            console.log("✅ Menú abierto exitosamente");
         } else {
-            sendToast("❌ Menú no encontrado", 2000);
+            sendToast("❌ Menú no encontrado - Recreando...", 2000);
+            setupMenu(); // Recrear menú
+            setTimeout(() => {
+                const newMenu = document.querySelector('#studyboost-menu') || document.querySelector('dropDownMenu');
+                if (newMenu) {
+                    newMenu.style.display = 'flex';
+                    sendToast("✅ Menú recreado y abierto", 2000);
+                }
+            }, 1000);
         }
+    };
+    
+    window.forceShowMenu = () => {
+        // Función más agresiva para mostrar el menú
+        document.querySelectorAll('watermark, #studyboost-watermark').forEach(el => el.remove());
+        setTimeout(() => {
+            setupMenu();
+            sendToast("🔧 Menú forzado a recrearse", 3000);
+        }, 500);
     };
     
     window.showUltraStats = () => {
