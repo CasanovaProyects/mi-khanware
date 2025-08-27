@@ -311,7 +311,7 @@ async function loadCss(url) { return new Promise((resolve) => { const link = doc
 
 /* Visual Functions */
 function setupMenu() {
-    loadScript(repoPath+'visuals/mainMenu.js', 'mainMenu');
+    loadScript(repoPath+'visuals/mainMenuSimple.js', 'mainMenuSimple');
     loadScript(repoPath+'visuals/statusPanel.js', 'statusPanel');
     loadScript(repoPath+'visuals/widgetBot.js', 'widgetBot');
     if(isDev) loadScript(repoPath+'visuals/devTab.js', 'devTab');
@@ -437,35 +437,59 @@ loadScript('https://cdn.jsdelivr.net/npm/toastify-js', 'toastifyPlugin')
     
     // Funciones globales de emergencia mejoradas
     window.openUltraMenu = () => {
-        const watermark = document.querySelector('#studyboost-watermark') || document.querySelector('watermark');
-        const menu = document.querySelector('#studyboost-menu') || document.querySelector('dropDownMenu');
+        console.log("🚨 Comando openUltraMenu() ejecutado");
         
-        if (watermark && menu) {
-            menu.style.display = 'flex';
-            menu.style.opacity = '1';
-            menu.style.transform = 'translateY(0px)';
+        // Buscar el menú simple
+        const watermark = document.querySelector('#ultra-watermark') || document.querySelector('.ultra-watermark');
+        const dropdown = document.querySelector('#ultra-dropdown') || document.querySelector('.ultra-dropdown');
+        
+        if (watermark && dropdown) {
+            dropdown.style.display = 'block';
+            dropdown.style.opacity = '1';
             sendToast("🎮 Menú ULTRA abierto por comando", 2000);
-            console.log("✅ Menú abierto exitosamente");
+            console.log("✅ Menú encontrado y abierto");
         } else {
-            sendToast("❌ Menú no encontrado - Recreando...", 2000);
-            setupMenu(); // Recrear menú
+            console.warn("❌ Menú no encontrado, recreando...");
+            sendToast("🔧 Recreando menú...", 2000);
+            
+            // Recrear menú simple
+            setupMenu();
+            
             setTimeout(() => {
-                const newMenu = document.querySelector('#studyboost-menu') || document.querySelector('dropDownMenu');
-                if (newMenu) {
-                    newMenu.style.display = 'flex';
-                    sendToast("✅ Menú recreado y abierto", 2000);
-                }
-            }, 1000);
+                window.showUltraMenu();
+                sendToast("✅ Menú recreado y abierto", 2000);
+            }, 2000);
         }
     };
     
     window.forceShowMenu = () => {
-        // Función más agresiva para mostrar el menú
-        document.querySelectorAll('watermark, #studyboost-watermark').forEach(el => el.remove());
+        console.log("🔧 Forzando recreación completa del menú");
+        
+        // Eliminar menús existentes
+        document.querySelectorAll('#ultra-watermark, .ultra-watermark, watermark, #studyboost-watermark').forEach(el => el.remove());
+        document.querySelectorAll('#ultra-dropdown, .ultra-dropdown, dropDownMenu, #studyboost-menu').forEach(el => el.remove());
+        
         setTimeout(() => {
             setupMenu();
-            sendToast("🔧 Menú forzado a recrearse", 3000);
+            sendToast("🛠️ Menú completamente recreado", 3000);
+            
+            setTimeout(() => {
+                if (window.showUltraMenu) {
+                    window.showUltraMenu();
+                }
+            }, 1000);
         }, 500);
+    };
+    
+    window.debugMenu = () => {
+        console.log("🔍 DEBUG DEL MENÚ:");
+        console.log("- Watermark:", document.querySelector('#ultra-watermark'));
+        console.log("- Dropdown:", document.querySelector('#ultra-dropdown'));
+        console.log("- Funciones disponibles:", {
+            showUltraMenu: typeof window.showUltraMenu,
+            hideUltraMenu: typeof window.hideUltraMenu,
+            toggleUltraMenu: typeof window.toggleUltraMenu
+        });
     };
     
     window.showUltraStats = () => {
