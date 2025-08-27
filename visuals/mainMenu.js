@@ -60,15 +60,30 @@ function handleInput(ids, callback = null) {
     });
 }
 
+/* Verificar y crear elementos si no existen */
+if (!window.watermark || !document.body.contains(window.watermark)) {
+    window.watermark = document.createElement('div');
+    window.watermark.id = 'studyboost-watermark';
+}
+
+if (!window.dropdownMenu || !document.body.contains(window.dropdownMenu)) {
+    window.dropdownMenu = document.createElement('div');
+    window.dropdownMenu.id = 'studyboost-menu';
+}
+
+const watermark = window.watermark;
+const dropdownMenu = window.dropdownMenu;
+
 /* Watermark ULTRA */
 Object.assign(watermark.style, {
-    position: 'fixed', top: '0', left: '85%', width: '160px', height: '35px', 
-    background: 'linear-gradient(45deg, rgba(0,0,0,0.8), rgba(0,255,65,0.2))',
+    position: 'fixed', top: '10px', left: '85%', width: '160px', height: '35px', 
+    background: 'linear-gradient(45deg, rgba(0,0,0,0.9), rgba(0,255,65,0.3))',
     color: 'white', fontSize: '15px', fontFamily: 'MuseoSans, sans-serif', 
     display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
-    cursor: 'default', userSelect: 'none', padding: '0 12px', borderRadius: '12px', 
-    zIndex: '1001', transition: 'all 0.3s ease',
-    border: '1px solid rgba(0,255,65,0.3)', boxShadow: '0 0 15px rgba(0,255,65,0.2)'
+    cursor: 'pointer', userSelect: 'none', padding: '0 12px', borderRadius: '12px', 
+    zIndex: '99999', transition: 'all 0.3s ease',
+    border: '2px solid rgba(0,255,65,0.4)', boxShadow: '0 0 20px rgba(0,255,65,0.3)',
+    backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'
 });
 
 if (device.mobile) watermark.style.left = '50%'
@@ -79,7 +94,10 @@ watermark.innerHTML = `
     <span style="color: gray; padding-left: 2px; font-family: Arial, sans-serif; font-size: 10px">${ver.replace('ULTRA', 'PRO')}</span>
 `;
 
-document.body.appendChild(watermark);
+// Asegurar que el watermark esté en el DOM
+if (!document.body.contains(watermark)) {
+    document.body.appendChild(watermark);
+}
 
 // Mensaje de confirmación del menú
 debug("✅ Watermark ULTRA agregado al DOM");
@@ -93,23 +111,57 @@ setTimeout(() => {
     });
 }, 2000);
 
-let isDragging = false, offsetX, offsetY;
+// SISTEMA DE ARRASTRE MEJORADO
+let isDragging = false, offsetX, offsetY, dragThreshold = 5;
+let mouseDownPos = { x: 0, y: 0 };
 
-watermark.addEventListener('mousedown', e => { if (!dropdownMenu.contains(e.target)) { isDragging = true; offsetX = e.clientX - watermark.offsetLeft; offsetY = e.clientY - watermark.offsetTop; watermark.style.transform = 'scale(0.9)'; } });
-watermark.addEventListener('mouseup', () => { isDragging = false; watermark.style.transform = 'scale(1)'; });
+watermark.addEventListener('mousedown', (e) => {
+    if (e.button !== 0) return; // Solo botón izquierdo
+    mouseDownPos = { x: e.clientX, y: e.clientY };
+    offsetX = e.clientX - watermark.offsetLeft;
+    offsetY = e.clientY - watermark.offsetTop;
+    watermark.style.transform = 'scale(0.95)';
+    e.preventDefault();
+});
 
-document.addEventListener('mousemove', e => { if (isDragging) { let newX = Math.max(0, Math.min(e.clientX - offsetX, window.innerWidth - watermark.offsetWidth)); let newY = Math.max(0, Math.min(e.clientY - offsetY, window.innerHeight - watermark.offsetHeight)); Object.assign(watermark.style, { left: `${newX}px`, top: `${newY}px` }); dropdownMenu.style.display = 'none'; } });
+watermark.addEventListener('mouseup', (e) => {
+    const moved = Math.abs(e.clientX - mouseDownPos.x) + Math.abs(e.clientY - mouseDownPos.y);
+    
+    if (moved < dragThreshold && !isDragging) {
+        // Es un click, no arrastre
+        setTimeout(() => toggleMenu(), 10);
+    }
+    
+    isDragging = false;
+    watermark.style.transform = 'scale(1)';
+});
 
-/* Dropdown ULTRA */
+document.addEventListener('mousemove', (e) => {
+    if (!isDragging) {
+        const moved = Math.abs(e.clientX - mouseDownPos.x) + Math.abs(e.clientY - mouseDownPos.y);
+        if (moved > dragThreshold && e.buttons === 1) {
+            isDragging = true;
+            if (menuVisible) toggleMenu(); // Cerrar menú al arrastrar
+        }
+    }
+    
+    if (isDragging) {
+        let newX = Math.max(0, Math.min(e.clientX - offsetX, window.innerWidth - watermark.offsetWidth));
+        let newY = Math.max(0, Math.min(e.clientY - offsetY, window.innerHeight - watermark.offsetHeight));
+        Object.assign(watermark.style, { left: `${newX}px`, top: `${newY}px` });
+    }
+});
+
+/* Dropdown ULTRA - Configuración mejorada */
 Object.assign(dropdownMenu.style, {
-    position: 'absolute', top: '100%', left: '0', width: '200px', 
+    position: 'absolute', top: '100%', left: '0', width: '220px', 
     background: 'linear-gradient(135deg, rgba(0,0,0,0.95), rgba(0,40,0,0.9))',
     borderRadius: '12px', color: 'white', fontSize: '13px', fontFamily: 'Monospace, sans-serif',
-    display: 'none', flexDirection: 'column', zIndex: '10000', padding: '8px', cursor: 'default',
-    userSelect: 'none', transition: 'all 0.3s ease', backdropFilter: 'blur(5px)', 
-    WebkitBackdropFilter: 'blur(5px)', border: '1px solid rgba(0,255,65,0.3)',
-    boxShadow: '0 5px 25px rgba(0,255,65,0.2), inset 0 1px 0 rgba(255,255,255,0.1)',
-    maxHeight: '400px', overflowY: 'auto'
+    display: 'none', flexDirection: 'column', zIndex: '99998', padding: '12px', cursor: 'default',
+    userSelect: 'none', transition: 'all 0.3s ease', backdropFilter: 'blur(10px)', 
+    WebkitBackdropFilter: 'blur(10px)', border: '2px solid rgba(0,255,65,0.4)',
+    boxShadow: '0 8px 32px rgba(0,255,65,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
+    maxHeight: '450px', overflowY: 'auto', transform: 'translateY(-5px)'
 });
 
 dropdownMenu.innerHTML = `
@@ -149,6 +201,37 @@ dropdownMenu.innerHTML = `
 `;
 
 watermark.appendChild(dropdownMenu);
+
+// Asegurar que el dropdown esté correctamente configurado
+watermark.style.position = 'fixed'; // Mantener fixed pero asegurar contenido
+dropdownMenu.style.position = 'absolute';
+
+// Mensaje de confirmación del menú
+debug("✅ Watermark ULTRA agregado al DOM");
+
+// TIMEOUT EXTENDIDO para asegurar carga completa
+setTimeout(() => {
+    sendToast("🎮 Haz HOVER o CLICK en 'SB PRO' para abrir menú", 4000);
+    console.log("🎯 Menú ULTRA listo - Coordenadas:", {
+        watermark: watermark.getBoundingClientRect(),
+        dropdown: dropdownMenu.getBoundingClientRect(),
+        isVisible: dropdownMenu.style.display
+    });
+    
+    // Comando de emergencia global
+    window.showUltraMenu = () => {
+        menuVisible = true;
+        dropdownMenu.style.display = 'flex';
+        sendToast("🚨 Menú forzado por comando de emergencia", 3000);
+    };
+    
+    window.hideUltraMenu = () => {
+        menuVisible = false;
+        dropdownMenu.style.display = 'none';
+        sendToast("🚫 Menú cerrado por comando", 2000);
+    };
+    
+}, 3000);
 
 let featuresList = [
     { name: 'questionSpoof', type: 'checkbox', variable: 'features.questionSpoof', attributes: 'checked', labeled: true, label: '🎯 Question Spoof' },
@@ -212,36 +295,54 @@ handleInput('statisticsPanel', checked => {
     }
 });
 
-watermark.addEventListener('mouseenter', () => { 
-    dropdownMenu.style.display = 'flex'; 
-    playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/3kd01iyj.wav'); 
-});
+// EVENTOS MEJORADOS DEL MENÚ
+let menuVisible = false;
 
-watermark.addEventListener('mouseleave', e => { 
-    if (!watermark.contains(e.relatedTarget)) {
-        dropdownMenu.style.display = 'none'; 
-        playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/rqizlm03.wav'); 
+// Función para toggle del menú
+function toggleMenu() {
+    menuVisible = !menuVisible;
+    dropdownMenu.style.display = menuVisible ? 'flex' : 'none';
+    
+    if (menuVisible) {
+        dropdownMenu.style.opacity = '0';
+        dropdownMenu.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+            dropdownMenu.style.opacity = '1';
+            dropdownMenu.style.transform = 'translateY(0px)';
+        }, 10);
+        playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/3kd01iyj.wav');
+        sendToast('📱 Menú SB PRO abierto', 1500);
+    } else {
+        playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/rqizlm03.wav');
+        sendToast('📴 Menú cerrado', 1000);
+    }
+}
+
+// Eventos del watermark - HOVER para abrir
+watermark.addEventListener('mouseenter', () => {
+    if (!menuVisible && !isDragging) {
+        toggleMenu();
     }
 });
 
-// NUEVO: Evento de click adicional para abrir/cerrar
-watermark.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const isVisible = dropdownMenu.style.display === 'flex';
-    dropdownMenu.style.display = isVisible ? 'none' : 'flex';
-    playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/5os0bypi.wav');
-    sendToast(isVisible ? '📴 Menú cerrado' : '📱 Menú ULTRA abierto', 1500);
+// Evento para mantener el menú abierto al pasar el mouse por encima
+watermark.addEventListener('mouseleave', (e) => {
+    // Solo cerrar si el mouse no va hacia el dropdown
+    setTimeout(() => {
+        if (!watermark.matches(':hover') && !dropdownMenu.matches(':hover')) {
+            if (menuVisible) toggleMenu();
+        }
+    }, 200);
 });
 
-// NUEVO: Evitar que el menú se cierre al hacer click dentro
+// Evitar que el menú se cierre al hacer click dentro
 dropdownMenu.addEventListener('click', (e) => {
     e.stopPropagation();
 });
 
-// NUEVO: Cerrar menú al hacer click fuera
+// Cerrar menú al hacer click fuera
 document.addEventListener('click', (e) => {
     if (!watermark.contains(e.target) && !dropdownMenu.contains(e.target)) {
-        dropdownMenu.style.display = 'none';
+        if (menuVisible) toggleMenu();
     }
 });
