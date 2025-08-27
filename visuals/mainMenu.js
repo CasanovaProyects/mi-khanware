@@ -74,9 +74,9 @@ Object.assign(watermark.style, {
 if (device.mobile) watermark.style.left = '50%'
 
 watermark.innerHTML = `
-    <span style="text-shadow: -1px 0.5px 0 #00ff41, -2px 0px 0 #00aa2e; font-weight: bold;">KW</span>
-    <span style="color: #00ff41; font-size: 10px;">ULTRA</span>
-    <span style="color: gray; padding-left: 2px; font-family: Arial, sans-serif; font-size: 10px">${ver}</span>
+    <span style="text-shadow: -1px 0.5px 0 #00ff41, -2px 0px 0 #00aa2e; font-weight: bold;">SB</span>
+    <span style="color: #00ff41; font-size: 10px;">PRO</span>
+    <span style="color: gray; padding-left: 2px; font-family: Arial, sans-serif; font-size: 10px">${ver.replace('ULTRA', 'PRO')}</span>
 `;
 
 document.body.appendChild(watermark);

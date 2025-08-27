@@ -1,8 +1,26 @@
 const ver = "V4.0.0-ULTRA";
 let isDev = false;
 
-// CASANOVA PROYECTS - KHANWARE ULTRA EDITION
-const repoPath = `https://raw.githubusercontent.com/CasanovaProyects/mi-khanware/refs/heads/${isDev ? "dev/" : "main/"}`;
+// SISTEMA DE PROTECCIÓN ANTI-RASTREO
+const securityConfig = {
+    useProxy: true,
+    obfuscateUrls: true,
+    fakeBrowser: true,
+    hideConsole: true,
+    randomizeFingerprint: true
+};
+
+// URLs ofuscadas y rotativas
+const mirrorUrls = [
+    'https://cdn.jsdelivr.net/gh/CasanovaProyects/mi-khanware@main/',
+    'https://cdn.statically.io/gh/CasanovaProyects/mi-khanware/main/',
+    'https://raw.githubusercontent.com/CasanovaProyects/mi-khanware/main/',
+    'https://gitcdn.xyz/repo/CasanovaProyects/mi-khanware/main/',
+];
+
+// Seleccionar URL aleatoria para evitar patrones
+const getRandomMirror = () => mirrorUrls[Math.floor(Math.random() * mirrorUrls.length)];
+const repoPath = getRandomMirror();
 
 let device = {
     mobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone|Mobile|Tablet|Kindle|Silk|PlayBook|BB10/i.test(navigator.userAgent),
@@ -60,10 +78,89 @@ window.statistics = {
     lastActivity: Date.now()
 };
 
-/* Security */
-document.addEventListener('contextmenu', (e) => !window.disableSecurity && e.preventDefault());
-document.addEventListener('keydown', (e) => { if (!window.disableSecurity && (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I', 'C', 'J'].includes(e.key)))) { e.preventDefault(); } });
-console.log(Object.defineProperties(new Error, { toString: {value() {(new Error).stack.includes('toString@') && location.reload();}}, message: {get() {location.reload();}}, }));
+/* Security & Anti-Detection System */
+const SecurityShield = {
+    // Fake User Agent rotativo
+    userAgents: [
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/121.0'
+    ],
+    
+    // Ofuscar console.log
+    hideConsoleLogs: () => {
+        if (!securityConfig.hideConsole) return;
+        const originalLog = console.log;
+        console.log = function(...args) {
+            // Solo mostrar si no contiene palabras clave sensibles
+            const text = args.join(' ');
+            if (!text.includes('KHANWARE') && !text.includes('CasanovaProyects')) {
+                originalLog.apply(console, args);
+            }
+        };
+    },
+    
+    // Randomizar fingerprint del navegador
+    randomizeFingerprint: () => {
+        if (!securityConfig.randomizeFingerprint) return;
+        
+        // Fake screen resolution
+        Object.defineProperty(screen, 'width', { value: 1920 + Math.floor(Math.random() * 400) });
+        Object.defineProperty(screen, 'height', { value: 1080 + Math.floor(Math.random() * 200) });
+        
+        // Fake timezone
+        const fakeTimezone = ['America/New_York', 'Europe/London', 'Asia/Tokyo'][Math.floor(Math.random() * 3)];
+        Object.defineProperty(Intl.DateTimeFormat.prototype, 'resolvedOptions', {
+            value: () => ({ timeZone: fakeTimezone })
+        });
+    },
+    
+    // Interceptar y ofuscar requests
+    protectRequests: () => {
+        const originalFetch = window.fetch;
+        window.fetch = async function(input, init = {}) {
+            // Agregar headers de protección
+            if (!init.headers) init.headers = {};
+            
+            // User agent rotativo
+            if (securityConfig.fakeBrowser) {
+                init.headers['User-Agent'] = SecurityShield.userAgents[Math.floor(Math.random() * SecurityShield.userAgents.length)];
+            }
+            
+            // Headers adicionales de protección
+            init.headers['X-Forwarded-For'] = SecurityShield.generateFakeIP();
+            init.headers['X-Real-IP'] = SecurityShield.generateFakeIP();
+            
+            return originalFetch.call(this, input, init);
+        };
+    },
+    
+    // Generar IP falsa para headers
+    generateFakeIP: () => {
+        return Array.from({length: 4}, () => Math.floor(Math.random() * 255)).join('.');
+    },
+    
+    // Limpiar rastros en DOM
+    cleanDOMTraces: () => {
+        // Remover referencias directas al repositorio
+        const scripts = document.querySelectorAll('script');
+        scripts.forEach(script => {
+            if (script.src && script.src.includes('CasanovaProyects')) {
+                script.remove();
+            }
+        });
+    },
+    
+    // Inicializar todas las protecciones
+    init: () => {
+        SecurityShield.hideConsoleLogs();
+        SecurityShield.randomizeFingerprint();
+        SecurityShield.protectRequests();
+        SecurityShield.cleanDOMTraces();
+        debug('🛡️ Sistema de protección ULTRA activado');
+    }
+};
 
 /* Misc Styles */
 document.head.appendChild(Object.assign(document.createElement("style"),{innerHTML:"@font-face{font-family:'MuseoSans';src:url('https://corsproxy.io/?url=https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/ynddewua.ttf')format('truetype')}" }));
@@ -77,8 +174,18 @@ const plppdo = new EventEmitter();
 new MutationObserver((mutationsList) => { for (let mutation of mutationsList) if (mutation.type === 'childList') plppdo.emit('domChanged'); }).observe(document.body, { childList: true, subtree: true });
 
 /* Enhanced Functions */
-window.debug = function(text) { if(window.debugMode) console.log(`[KHANWARE-ULTRA] ${text}`); }
-window.debugMode = true; // Activar debug por defecto
+window.debug = function(text) { 
+    if (window.debugMode && securityConfig.hideConsole) {
+        // Solo guardar en memoria, no mostrar en consola
+        if (!window.debugLog) window.debugLog = [];
+        window.debugLog.push(`${new Date().toISOString()}: ${text}`);
+        if (window.debugLog.length > 100) window.debugLog.shift(); // Máximo 100 entradas
+    } else if (window.debugMode) {
+        console.log(`[SISTEMA] ${text}`); // Texto ofuscado
+    }
+};
+window.debugMode = false; // Desactivar por defecto para seguridad
+window.getDebugLog = () => window.debugLog || [];
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms + (features.humanBehavior ? Math.random() * ms * 0.3 : 0)));
 const playAudio = url => { const audio = new Audio(url); audio.volume = 0.3; audio.play().catch(() => {}); debug(`🔊 Playing: ${url}`); };
 const findAndClickBySelector = selector => { 
@@ -189,10 +296,10 @@ async function showSplashScreen() {
     
     splashScreen.innerHTML = `
         <div class="ultra-logo">
-            <div style="font-size: 48px; margin-bottom: 20px;">🌿</div>
-            <div><span style="color:white;">KHANWARE</span><span style="color:#00ff41;">.ULTRA</span></div>
-            <div style="font-size: 16px; margin-top: 20px; color: #00ff41;">by CasanovaProyects</div>
-            <div style="font-size: 12px; margin-top: 10px; color: #888;">Cargando mejoras avanzadas...</div>
+            <div style="font-size: 48px; margin-bottom: 20px;">📚</div>
+            <div><span style="color:white;">STUDY</span><span style="color:#00ff41;">BOOST</span></div>
+            <div style="font-size: 16px; margin-top: 20px; color: #00ff41;">Educational Enhancement</div>
+            <div style="font-size: 12px; margin-top: 10px; color: #888;">Cargando sistema adaptativo...</div>
         </div>
     `; 
     document.body.appendChild(splashScreen); 
@@ -233,6 +340,9 @@ loadScript('https://cdn.jsdelivr.net/npm/darkreader@4.9.92/darkreader.min.js', '
 loadCss('https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css', 'toastifyCss');
 loadScript('https://cdn.jsdelivr.net/npm/toastify-js', 'toastifyPlugin')
 .then(async () => {
+    // Inicializar sistema de protección ANTES que todo
+    SecurityShield.init();
+    
     // Load saved statistics
     const savedStats = localStorage.getItem('khanware_ultra_stats');
     if(savedStats) {
